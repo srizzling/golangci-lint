@@ -11,8 +11,8 @@ import (
 	"github.com/GoASTScanner/gas"
 	"github.com/GoASTScanner/gas/rules"
 	"github.com/golangci/golangci-lint/pkg/lint/linter"
-	"github.com/golangci/golangci-lint/pkg/logutils"
 	"github.com/golangci/golangci-lint/pkg/result"
+	"github.com/sirupsen/logrus"
 )
 
 type Gas struct{}
@@ -46,7 +46,7 @@ func (lint Gas) Run(ctx context.Context, lintCtx *linter.Context) ([]result.Issu
 		if err != nil {
 			r = &result.Range{}
 			if n, rerr := fmt.Sscanf(i.Line, "%d-%d", &r.From, &r.To); rerr != nil || n != 2 {
-				logutils.HiddenWarnf("Can't convert gas line number %q of %v to int: %s", i.Line, i, err)
+				logrus.Warnf("Can't convert gas line number %q of %v to int: %s", i.Line, i, err)
 				continue
 			}
 			line = r.From

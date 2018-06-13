@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/golangci/golangci-lint/pkg/lint/linter"
-	"github.com/golangci/golangci-lint/pkg/logutils"
 	"github.com/golangci/golangci-lint/pkg/result"
 	"github.com/golangci/golangci-lint/pkg/result/processors"
 	"github.com/golangci/golangci-lint/pkg/timeutils"
@@ -31,7 +30,7 @@ func runLinterSafe(ctx context.Context, lintCtx *linter.Context, lc linter.Confi
 	defer func() {
 		if panicData := recover(); panicData != nil {
 			err = fmt.Errorf("panic occured: %s", panicData)
-			logutils.HiddenWarnf("Panic stack trace: %s", debug.Stack())
+			logrus.Warnf("Panic stack trace: %s", debug.Stack())
 		}
 	}()
 
@@ -152,7 +151,7 @@ func (r SimpleRunner) processLintResults(ctx context.Context, inCh <-chan lintRe
 
 		for res := range inCh {
 			if res.err != nil {
-				logutils.HiddenWarnf("Can't run linter %s: %s", res.linter.Linter.Name(), res.err)
+				logrus.Warnf("Can't run linter %s: %s", res.linter.Linter.Name(), res.err)
 				continue
 			}
 
@@ -221,7 +220,7 @@ func (r *SimpleRunner) processIssues(ctx context.Context, issues []result.Issue,
 		})
 
 		if err != nil {
-			logutils.HiddenWarnf("Can't process result by %s processor: %s", p.Name(), err)
+			logrus.Warnf("Can't process result by %s processor: %s", p.Name(), err)
 		} else {
 			issues = newIssues
 		}

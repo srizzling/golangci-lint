@@ -9,7 +9,6 @@ import (
 
 	"github.com/golangci/golangci-lint/pkg/config"
 	"github.com/golangci/golangci-lint/pkg/fsutils"
-	"github.com/golangci/golangci-lint/pkg/logutils"
 	"github.com/golangci/golangci-lint/pkg/printers"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
@@ -84,7 +83,7 @@ func setupConfigFileSearch(args []string) {
 
 	absStartPath, err := filepath.Abs(firstArg)
 	if err != nil {
-		logutils.HiddenWarnf("Can't make abs path for %q: %s", firstArg, err)
+		logrus.Warnf("Can't make abs path for %q: %s", firstArg, err)
 		absStartPath = filepath.Clean(firstArg)
 	}
 
@@ -117,13 +116,13 @@ func setupConfigFileSearch(args []string) {
 func getRelPath(p string) string {
 	wd, err := os.Getwd()
 	if err != nil {
-		logutils.HiddenWarnf("Can't get wd: %s", err)
+		logrus.Warnf("Can't get wd: %s", err)
 		return p
 	}
 
 	r, err := filepath.Rel(wd, p)
 	if err != nil {
-		logutils.HiddenWarnf("Can't make path %s relative to %s: %s", p, wd, err)
+		logrus.Warnf("Can't make path %s relative to %s: %s", p, wd, err)
 		return p
 	}
 

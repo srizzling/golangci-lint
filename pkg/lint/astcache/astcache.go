@@ -108,6 +108,9 @@ func (c *Cache) parseFile(filePath string, fset *token.FileSet) {
 		Err:  err,
 		Name: filePath,
 	}
+	if err != nil {
+		logrus.Warnf("Can't parse AST of %s: %s", filePath, err)
+	}
 }
 
 func LoadFromFiles(files []string) (*Cache, error) {
